@@ -20,6 +20,11 @@ import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @Get('/:id')
+  public getUser(@Param('id') id: string) {
+    return this.usersService.findOneById(+id);
+  }
+
   @Get('/:id?')
   @ApiOperation({
     summary: 'Fetches a list of registered users on the application',
