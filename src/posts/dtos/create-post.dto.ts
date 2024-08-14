@@ -1,8 +1,8 @@
 import { Type } from 'class-transformer';
 import {
   IsArray,
+  IsDate,
   IsEnum,
-  IsISO8601,
   IsInt,
   IsJSON,
   IsNotEmpty,
@@ -92,7 +92,7 @@ export class CreatePostDto {
   })
   @IsOptional()
   //   @Type(() => Date)
-  @IsISO8601()
+  @IsDate()
   publishedOn?: Date;
 
   @ApiPropertyOptional({
