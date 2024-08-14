@@ -9,13 +9,15 @@ import {
 } from '@nestjs/common';
 import { GetUsersParamDto } from '../dtos/get-users-param.dto';
 import { AuthService } from 'src/auth/providers/auth.service';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { User } from '../user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { ConfigService, ConfigType } from '@nestjs/config';
 import profileConfig from '../config/profile.config';
 import { error } from 'console';
+import { UsersCreateManyProvider } from './users-create-many.provider';
+import { CreateManyUsersDto } from '../dtos/create-many-users.dto';
 /**
  * Class to connect to Users table and perform business operations
  */
@@ -34,6 +36,16 @@ export class UsersService {
      */
     @Inject(profileConfig.KEY)
     private readonly profileConfiguration: ConfigType<typeof profileConfig>,
+
+    /**
+     * Inject Datasource
+     */
+    private readonly dataSource: DataSource,
+
+    /**
+     * Inject usersCreateManyProvider
+     */
+    private readonly usersCreateManyProvider: UsersCreateManyProvider,
   ) {}
 
   public async createUser(createUserDto: CreateUserDto) {
@@ -122,5 +134,9 @@ export class UsersService {
     }
 
     return user;
+  }
+
+  public async createMany(createManyUsersDto: CreateManyUsersDto) {
+    return await this.usersCreateManyProvider.createMany(createManyUsersDto);
   }
 }
